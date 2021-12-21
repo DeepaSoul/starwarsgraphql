@@ -1,4 +1,9 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MagicTheGathering
+
+This is a [Next.js](https://nextjs.org/), [GraphQl](https://graphql.org/) and `Typescript` project. It shows different people/characters and their information from the well loved movie series `Star Wars`.
+
+Below is how to get the project running on your system, this assumes you already have `nodejs/npm` and a text editor of your choice installed.
+
 
 ## Getting Started
 
@@ -12,23 +17,24 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Once ran succefully you can then alternatively run the below command to build the project for production and run it:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+npm run build && npm run start
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+`There are two main pages :`
+### Characters List Page
 
-To learn more about Next.js, take a look at the following resources:
+![Characters List Page](public/charlistpage.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The above page shows a pagonated list of characters, which whom if you click on will take you to the characters page with their details
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Character Details Page
 
-## Deploy on Vercel
+![Character Details Page](public/charpage.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Which shows information of the characters along with a button to go back to previous list page.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+`Live Demo:`
