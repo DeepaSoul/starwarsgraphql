@@ -1,0 +1,79 @@
+.mainContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: url("https://cdn.wallpapersafari.com/33/42/Avc0xl.png");
+    color: white;
+}
+
+.mainOverlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0 10%;
+    background: rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    padding: 50% 0 0 0;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 60%;
+    margin: 0 auto;
+    perspective: 450px;
+}
+
+.scrollText {
+    width: 50%;
+    color: #ffc909;
+    font-size: 3vw;
+    line-height: 1.5em;
+    font-weight: bold;
+    text-align: justify;
+    position: relative;
+    animation: scroll 10s linear forwards;
+}
+
+.scrollText button {
+    margin: 0 auto;
+}
+
+.scrollText p {
+    display: flex;
+    justify-content: space-between;
+}
+
+.scrollText p span {
+    color: blue;
+}
+
+@keyframes scroll {
+    0% {
+        top: 0;
+        transform: translateZ(0) rotateX(20deg);
+    }
+
+    50% {
+        top: -1600px;
+        transform: translateZ(-800px) rotateX(21deg);
+    }
+
+    100% {
+        top: -70vh;
+        transform: translateZ(0) rotateX(0);
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .scrollText {
+        animation: unset;
+    }
+}

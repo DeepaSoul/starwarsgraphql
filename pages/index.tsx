@@ -1,46 +1,39 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { gql } from "@apollo/client";
-import client from "../apollo-client";
+import CharactersList from "../components/charactersList";
+import { getCharacters } from "../graphql/queries";
+import { InferGetServerSidePropsType } from "next";
+import { characterType } from "../interfaces/character";
+import { useState } from "react";
+import Character from "../components/character";
 
-export default function Home({ countries }) {
+export default function Home({ characters, next, previous }: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element {
+  const [selectedCharacter, setSelectedCharacter] = useState<characterType | null>(null);
+
+  const onCharacterSelect = (character: characterType) => {
+    setSelectedCharacter(character)
+  }
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Home - Star Wars GraphQl</title>
+        <link rel="icon" href="/logo.png" />
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          {countries.map((country) => (
-            <div key={country.code} className={styles.card}>
-              <h3>{country.name}</h3>
-              <p>
-                {country.code} - {country.emoji}
-              </p>
-            </div>
-          ))}
-        </div>
+        <h1 className={styles.title}>Star Wars</h1>
+        {selectedCharacter && <Character character={selectedCharacter} backPress={onCharacterSelect}/>}
+        {!selectedCharacter && <CharactersList characters={characters} next={next} previous={previous} characterSelect={onCharacterSelect}/>}
       </main>
 
       <footer className={styles.footer}>
         <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://github.com/DeepaSoul"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
+          Powered by{" Simphiwe Zulu"}
         </a>
       </footer>
     </div>
@@ -48,21 +41,13 @@ export default function Home({ countries }) {
 }
 
 export async function getServerSideProps() {
-  const { data } = await client.query({
-    query: gql`
-      query Countries {
-        countries {
-          code
-          name
-          emoji
-        }
-      }
-    `,
-  });
-
+  const { data } = (await getCharacters(1));
+  console.log(data)
   return {
     props: {
-      countries: data.countries.slice(0, 4),
+      characters: data.getPeople.results,
+      next: data.getPeople.next,
+      previous: data.getPeople.previous
     },
   };
 }
