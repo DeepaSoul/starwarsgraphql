@@ -1,5 +1,5 @@
 import React from 'react'
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { characterType } from '../interfaces/character'
 import { getChracterQuery } from '../graphql/queries';
 import styles from "../styles/CharacterPage.module.css";

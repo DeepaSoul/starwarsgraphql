@@ -1,15 +1,26 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import CharactersList from "../components/charactersList";
-import { getCharacters } from "../graphql/queries";
-import { InferGetServerSidePropsType } from "next";
+import { useQuery } from "@apollo/client";
+import { getCharactersQuery } from "../graphql/queries";
 import { characterType } from "../interfaces/character";
 import { useState } from "react";
 import Character from "../components/character";
 
-export default function Home({ characters, next, previous }: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element {
+export default function Home(): JSX.Element {
   const [selectedCharacter, setSelectedCharacter] = useState<characterType | null>(null);
   const [activePage, setActivePage] = useState(1);
+
+  const { data, loading, error } = useQuery(getCharactersQuery(activePage));
+
+  if (error) {
+    console.error(error);
+    return <div>Encountered error: {error}</div>;
+  }
+
+  if(loading){
+    return <div>Loading.....</div>
+  }
 
   const onCharacterSelect = (character: characterType) => {
     setSelectedCharacter(character)
@@ -24,8 +35,8 @@ export default function Home({ characters, next, previous }: InferGetServerSideP
 
       <main className={styles.main}>
         <h1 className={styles.title}>Star Wars</h1>
-        {selectedCharacter && <Character character={selectedCharacter} backPress={onCharacterSelect}/>}
-        {!selectedCharacter && <CharactersList characters={characters} next={next} previous={previous} characterSelect={onCharacterSelect} activePage={activePage} setActivePage={setActivePage}/>}
+        {selectedCharacter && !loading && <Character character={selectedCharacter} backPress={onCharacterSelect} />}
+        {!selectedCharacter && !loading && <CharactersList characters={data.getPeople.results} next={data.getPeople.next} previous={data.getPeople.previous} characterSelect={onCharacterSelect} activePage={activePage} setActivePage={setActivePage} />}
       </main>
 
       <footer className={styles.footer}>
@@ -41,14 +52,14 @@ export default function Home({ characters, next, previous }: InferGetServerSideP
   );
 }
 
-export async function getServerSideProps() {
-  const { data } = (await getCharacters(1));
-  console.log(data)
-  return {
-    props: {
-      characters: data.getPeople.results,
-      next: data.getPeople.next,
-      previous: data.getPeople.previous
-    },
-  };
-}
+//Uncomment below code if want to use SSR
+// export async function getServerSideProps() {
+//   const { data } = (await getCharacters(1));
+//   return {
+//     props: {
+//       characters: data.getPeople.results,
+//       next: data.getPeople.next,
+//       previous: data.getPeople.previous
+//     },
+//   };
+// }
