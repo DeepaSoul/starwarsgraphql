@@ -37,4 +37,4 @@ The above page shows a pagonated list of characters, which whom if you click on 
 
 Which shows information of the characters along with a button to go back to previous list page.
 
-`Live Demo:`
+`Live Demo:` [https://starwarsgraphql.vercel.app/](https://starwarsgraphql.vercel.app/)

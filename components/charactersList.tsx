@@ -2,26 +2,18 @@ import { useState } from "react";
 import { getCharacters } from "../graphql/queries";
 import { characterType } from "../interfaces/character";
 import styles from "../styles/Tables.module.css";
-import Pagination from "./pagination";
+import Pagination from '@mui/material/Pagination';
 import Image from "next/image";
 
-type CharactersListProps = { characters: [characterType], previous?: number, next?: number, characterSelect: Function }
+type CharactersListProps = { characters: [characterType], previous?: number, next?: number, characterSelect: Function, activePage: number, setActivePage: any }
 
-export default function CharactersList({ characters, previous, next, characterSelect }: CharactersListProps): JSX.Element {
+export default function CharactersList({ characters, previous, next, characterSelect, activePage, setActivePage }: CharactersListProps): JSX.Element {
     const [charactersList, setCharactersList] = useState(characters);
     const [previousPage, setPreviousPage] = useState(previous);
     const [nextPage, setNextPage] = useState(next);
-    const [activePage, setActivePage] = useState(1);
 
-    const handlePageClick = async (button: string) => {
-        let newPage = activePage
-
-        if(button === "prev"){
-            newPage = activePage - 1;
-        }else{
-            newPage = activePage + 1;
-        }
-
+    const handlePageClick = async (event: any, value: any) => {
+        let newPage = value
         const { data } = await getCharacters(newPage);
         setCharactersList(data.getPeople.results)
         setNextPage(data.getPeople.next)
@@ -54,7 +46,7 @@ export default function CharactersList({ characters, previous, next, characterSe
             </div>
 
             {charactersList.map((character: characterType, index) => (
-                <div className={styles.row} key={index} onClick={()=>characterSelect(character)}>
+                <div className={styles.row} key={index} onClick={() => characterSelect(character)}>
                     <div className={styles.name}>{character.name}</div>
 
                     <div className={styles.type}>{character.height}</div>
@@ -67,8 +59,8 @@ export default function CharactersList({ characters, previous, next, characterSe
                 </div>
             ))}
 
-            <Pagination pageNumber={activePage} previous={previousPage} next={nextPage} onClick={handlePageClick}/>
-            <Image src={"/sword.jpeg"} width={60} height={60}/>
+            <Pagination style={{ width: "100%", display: "flex", justifyContent: "center" }} count={Math.round(86 / 10)} page={activePage} onChange={handlePageClick} shape="rounded" />
+            <Image src={"/sword.jpeg"} width={60} height={60} />
         </div>
     );
 }

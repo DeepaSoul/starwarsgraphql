@@ -9,6 +9,7 @@ import Character from "../components/character";
 
 export default function Home({ characters, next, previous }: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element {
   const [selectedCharacter, setSelectedCharacter] = useState<characterType | null>(null);
+  const [activePage, setActivePage] = useState(1);
 
   const onCharacterSelect = (character: characterType) => {
     setSelectedCharacter(character)
@@ -24,7 +25,7 @@ export default function Home({ characters, next, previous }: InferGetServerSideP
       <main className={styles.main}>
         <h1 className={styles.title}>Star Wars</h1>
         {selectedCharacter && <Character character={selectedCharacter} backPress={onCharacterSelect}/>}
-        {!selectedCharacter && <CharactersList characters={characters} next={next} previous={previous} characterSelect={onCharacterSelect}/>}
+        {!selectedCharacter && <CharactersList characters={characters} next={next} previous={previous} characterSelect={onCharacterSelect} activePage={activePage} setActivePage={setActivePage}/>}
       </main>
 
       <footer className={styles.footer}>
